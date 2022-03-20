@@ -2,7 +2,7 @@ const Student = require('../models/studentModel');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
-// const { requireAuth } = require('../../middlewares/auth')
+
 
 // Register student
 const registerStudent = async (req, res) => {
@@ -41,6 +41,7 @@ const registerStudent = async (req, res) => {
     }
 }
 
+
 // Login student
 const loginStudent = async (req, res) => {
 
@@ -74,17 +75,38 @@ const loginStudent = async (req, res) => {
 // Get all students
 const getAllStudent = async (req, res) => {
     let student = res.locals.student;
+    console.log(student)
     try {
         const students = await Student.find().sort({ createdAt: -1 });
-        const allStu = students.map(({name,email})=> ({name,email}))
-        const currentStudent = _.pick(student,'name','email');
-        res.json({allStu,currentStudent});
+        const allStu = students.map(({name,email,_id}) => ({name,email,_id}))
+        // const currentStudent = _.pick(student,'name','email');
+        res.json({allStu});
 
     } catch (error) {
         console.log(error)
         res.status(500).send("Server Error")
     }
 }
+
+
+// Get a single student
+const getAStudent = async (req, res) => {
+    let student = res.locals.student;
+    console.log(student)
+    try {
+        const student = await Student.findOne({ _id : req.params.student_id });
+        if(!student) return res.status(404).json({msg: `No student with id ${req.params.student_id}`})
+
+        const stdData = _.pick(student, 'name','email');
+
+        return res.status(200).json({stdData});
+
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send("Server Error")
+    }
+}
+
 
 // Student sign out
 const studentLogout = (req, res) => {
@@ -93,9 +115,56 @@ const studentLogout = (req, res) => {
 }
 
 
+// Student update profile
+const studentProfileUpdate = async (req, res) => {
+
+    // the logged in user id
+    let currentStudent = res.locals.student
+    let loggedInStudentId = currentStudent._id.toString()
+    console.log(`The current logged in student id is -> ${loggedInStudentId}`)
+
+    // The id of the user who made the post
+    let profileUpdateStudent = await Student.findOne({_id: req.params.student_id})
+    let profileUpdateStudentId = profileUpdateStudent._id.toString()
+    console.log(`This post was made by this user with an id of -> ${profileUpdateStudentId}`)
+
+    // let student = res.locals.student;
+    // console.log(typeof student._id)
+    const { name, email } = req.body
+    try {
+        if(loggedInStudentId === profileUpdateStudentId){
+
+            let student = await Student.findOne({name})
+            let studentEmail = await Student.findOne({email})
+
+            if(student) return res.status(400).json({ msg:"Username alraedy exists" })
+
+            if(studentEmail) return res.status(400).json({ msg: "Email already exists"})
+
+            Student.findById({ _id: req.params.student_id })
+            .then(result => {
+                result.name = req.body.name;
+                result.email = req.body.email;
+
+                result.save();
+                res.json({ result })
+            })
+        }else {
+            return res.status(403).json({msg:"You are not authorized to Edit this profile"})
+        }
+        
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Server Error")
+    }
+}
+
+
 module.exports = {
     loginStudent,
     registerStudent,
     getAllStudent,
-    studentLogout
+    studentLogout,
+    getAStudent,
+    studentProfileUpdate
 }
