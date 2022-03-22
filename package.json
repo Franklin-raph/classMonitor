@@ -19,7 +19,9 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.7",
     "morgan": "^1.10.0",
+    "node-uuid": "^1.4.8",
     "nodemon": "^2.0.15",
-    "underscore": "^1.13.2"
+    "underscore": "^1.13.2",
+    "uuid": "^8.3.2"
   }
 }

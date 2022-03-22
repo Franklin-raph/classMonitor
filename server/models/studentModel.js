@@ -12,6 +12,18 @@ const StudentSchema = mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    phoneNum: {
+        type: Number,
+        required: true
+    },
+    gender: {
+        type: String,
+        required: true
+    },
+    studentID: {
+        type: String,
+        required: true
     }
 }, {timeStamps: true})
 
