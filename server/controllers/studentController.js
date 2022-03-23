@@ -9,7 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 // Register student
 const registerStudent = async (req, res) => {
     
-    const { name, email, password, phoneNum, gender } = req.body
+    const { name, email, password, phoneNum, gender, address } = req.body
 
     try {
         let student = await Student.findOne({name})
@@ -22,7 +22,7 @@ const registerStudent = async (req, res) => {
         const student_id = `TN-${uuidv4()}`;
 
         student = new Student({
-            name, email, password, phoneNum, gender, studentID:student_id
+            name, email, password, phoneNum, gender, address, studentID:student_id
         })
 
         const salt = await bcrypt.genSalt(10);
@@ -59,7 +59,6 @@ const loginStudent = async (req, res) => {
         let isMatch = await bcrypt.compare(password, student.password)
         if(!isMatch) return res.status(400).json({ msg: "Invalid login credentials"})
 
-
         const createToken = (id) => {
             return jwt.sign({ id }, process.env.JWT_SECRET, {
                 expiresIn: 60*60*1000*24*3
@@ -68,7 +67,7 @@ const loginStudent = async (req, res) => {
 
         const token = createToken(student._id)
         res.cookie('myToken', token, { httpOnly: true, maxAge: 60*60*1000*24*3})
-        res.status(200).json({studentID, token})
+        return res.status(200).json({student_id:studentID, token})
 
     } catch (error) {
         console.log(error)

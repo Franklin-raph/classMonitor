@@ -3,6 +3,7 @@ const morgan = require('morgan');
 const dotenv = require('dotenv').config()
 const { connectionMethod } = require('./config/db')
 const cookieParser = require('cookie-parser')
+const cors = require('cors')
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.listen(port, () => {
 })
 
 // middlewares
+app.use(cors());
 app.use(express.json())
 app.use(morgan('dev'))
 app.use(cookieParser())
