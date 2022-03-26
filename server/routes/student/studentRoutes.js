@@ -5,7 +5,7 @@ const { requireAuth, checkStudent } = require('../../middlewares/auth');
 
 // router.route()
 
-router.get('/', requireAuth, checkStudent, getAllStudent)
+router.get('/', getAllStudent)
 
 router.get('/:student_id', requireAuth, checkStudent, getAStudent)
 

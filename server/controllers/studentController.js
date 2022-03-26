@@ -83,7 +83,7 @@ const getAllStudent = async (req, res) => {
     try {
         const students = await Student.find().sort({ createdAt: -1 });
         const allStu = students.map(({name,email,studentID}) => ({name,email,studentID}))
-        res.json({allStu});
+        res.json(allStu);
 
     } catch (error) {
         console.log(error)
