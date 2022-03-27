@@ -101,9 +101,9 @@ const getAStudent = async (req, res) => {
         const student = await Student.findOne({ studentID : req.params.student_id });
         if(!student) return res.status(404).json({msg: `No student with id ${req.params.student_id}`})
 
-        const stdData = _.pick(student, 'name','email','studentID');
+        const stdData = _.pick(student, 'name','email','phoneNum','gender','studentID');
 
-        return res.status(200).json({stdData});
+        return res.status(200).json(stdData);
 
     } catch (error) {
         console.log(error.message)
