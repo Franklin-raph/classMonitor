@@ -54,6 +54,7 @@ const loginStudent = async (req, res) => {
 
     try {
         let student = await Student.findOne({studentID})
+        const signedInStudent = _.pick(student, 'name','email','phoneNum','gender','studentID');
         if(!student) return res.status(400).json({ msg: "Invalid login credentials"})
 
         let isMatch = await bcrypt.compare(password, student.password)
@@ -67,7 +68,7 @@ const loginStudent = async (req, res) => {
 
         const token = createToken(student._id)
         res.cookie('myToken', token, { httpOnly: true, maxAge: 60*60*1000*24*3})
-        return res.status(200).json({student_id:studentID, token})
+        return res.status(200).json({signedInStudent, token})
 
     } catch (error) {
         console.log(error)
