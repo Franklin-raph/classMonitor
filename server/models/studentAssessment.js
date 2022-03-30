@@ -6,14 +6,7 @@ const StudentAssessmentSchema = mongoose.Schema({
     },
     task : {
         type: String,
-    },
-    solution : {
-        type: String,
-    },
-    studentID : {
-        type:String,
     }
-
 }, {timestamps: true})
 
 module.exports = mongoose.model('studentAssesment', StudentAssessmentSchema);

@@ -1,5 +1,4 @@
 const Student = require('../models/studentModel');
-const StudentAssessmentModel = require('../models/studentAssessment')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
@@ -174,42 +173,6 @@ const studentProfileUpdate = async (req, res) => {
 }
 
 
-// STUDENTS ASSESSMENT SECTION
-const studentAssessment = async (req, res) => {
-    const { reference, task } = req.body;
-
-    try {
-        const assessment = new StudentAssessmentModel({
-            reference, task
-        })
-    
-        await assessment.save()
-        res.status(200).json({assessment})
-    } catch (error) {
-        console.log(error.message);
-        res.status(500).send("Server error")
-    }
-}
-
-const studentAssessmentSolution = async (req, res) => {
-
-    const { solution, studentID } = req.body
-
-    try {
-        const submittedAssignment = new StudentAssessmentModel({
-            solution, studentID
-        })
-
-        console.log(submittedAssignment)
-
-        await submittedAssignment.save()
-        res.status(200).json({submittedAssignment})
-    } catch (error) {
-        console.log(error.message)
-        res.status(500).send("Server error")
-    }
-}
-
 
 module.exports = {
     loginStudent,
@@ -218,6 +181,4 @@ module.exports = {
     studentLogout,
     getAStudent,
     studentProfileUpdate,
-    studentAssessment,
-    studentAssessmentSolution
 }
