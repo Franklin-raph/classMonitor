@@ -9,7 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 // Register student
 const registerStudent = async (req, res) => {
     
-    const { name, email, password, phoneNum, gender, address } = req.body
+    const { name, email, password, phoneNum, gender, address, github } = req.body
 
     try {
         let student = await Student.findOne({name})
@@ -22,8 +22,10 @@ const registerStudent = async (req, res) => {
         const student_id = `TN-${uuidv4()}`;
 
         student = new Student({
-            name, email, password, phoneNum, gender, address, studentID:student_id
+            name, email, password, phoneNum, gender, address, studentID:student_id, github
         })
+
+        console.log(student)
 
         const salt = await bcrypt.genSalt(10);
         student.password = await bcrypt.hash(password, salt)
@@ -37,8 +39,9 @@ const registerStudent = async (req, res) => {
 
         const token = createToken(student._id)
         res.cookie('myToken', token, { httpOnly: true, maxAge: 60*60*1000*24*3})
-        const registeredStudent = _.pick(student, 'name','email','phoneNum','gender','studentID');
-        res.status(200).json({registeredStudent,token})
+        const signedInStudent = _.pick(student, 'name','email','phoneNum','gender','studentID','github', 'address');
+        console.log(signedInStudent)
+        res.status(200).json({signedInStudent,token})
 
     } catch (error) {
         console.log(error)
@@ -54,7 +57,7 @@ const loginStudent = async (req, res) => {
 
     try {
         let student = await Student.findOne({studentID})
-        const signedInStudent = _.pick(student, 'name','email','phoneNum','gender','studentID');
+        const signedInStudent = _.pick(student, 'name','email','phoneNum','gender','address','studentID','github');
         if(!student) return res.status(400).json({ msg: "Invalid login credentials"})
 
         let isMatch = await bcrypt.compare(password, student.password)
@@ -83,7 +86,7 @@ const getAllStudent = async (req, res) => {
     console.log(student)
     try {
         const students = await Student.find().sort({ createdAt: -1 });
-        const allStu = students.map(({name,email,studentID}) => ({name,email,studentID}))
+        const allStu = students.map(({name,email,studentID,phoneNum,gender,github}) => ({name,email,studentID,phoneNum,gender,github}))
         res.json(allStu);
 
     } catch (error) {
@@ -101,7 +104,7 @@ const getAStudent = async (req, res) => {
         const student = await Student.findOne({ studentID : req.params.student_id });
         if(!student) return res.status(404).json({msg: `No student with id ${req.params.student_id}`})
 
-        const stdData = _.pick(student, 'name','email','phoneNum','gender','studentID');
+        const stdData = _.pick(student, 'name','email','phoneNum','gender','studentID','github','address');
 
         return res.status(200).json(stdData);
 
@@ -123,37 +126,46 @@ const studentLogout = (req, res) => {
 const studentProfileUpdate = async (req, res) => {
 
     // the logged in user id
-    let currentStudent = res.locals.student
-    let loggedInStudentId = currentStudent._id.toString()
-    console.log(`The current logged in student id is -> ${loggedInStudentId}`)
+    // let currentStudent = res.locals.student
+    // let loggedInStudentId = currentStudent._id.toString()
+    // console.log(`The current logged in student id is -> ${loggedInStudentId}`)
 
     // The id of the user who made the post
-    let profileUpdateStudent = await Student.findOne({_id: req.params.student_id})
-    let profileUpdateStudentId = profileUpdateStudent._id.toString()
-    console.log(`This post was made by this user with an id of -> ${profileUpdateStudentId}`)
+    // let profileUpdateStudent = await Student.findOne({_id: req.params.student_id})
+    // let profileUpdateStudentId = profileUpdateStudent._id.toString()
+    // console.log(`This post was made by this user with an id of -> ${profileUpdateStudentId}`)
 
-    const { name, email } = req.body
+    const { name, email, studentID } = req.body
     try {
-        if(loggedInStudentId === profileUpdateStudentId){
+        // if(loggedInStudentId === profileUpdateStudentId){
 
             let student = await Student.findOne({name})
             let studentEmail = await Student.findOne({email})
+
+            // let studentId = await Student.findOne({studentID})
+            // console.log(typeof studentId)
+            // console.log(studentId)
 
             if(student) return res.status(400).json({ msg:"Username alraedy exists" })
 
             if(studentEmail) return res.status(400).json({ msg: "Email already exists"})
 
-            Student.findById({ _id: req.params.student_id })
-            .then(result => {
-                result.name = req.body.name;
-                result.email = req.body.email;
+            Student.findOne({ studentID: req.params.student_id })
+            .then(signedInStudent => {
+                signedInStudent.name = req.body.name;
+                signedInStudent.email = req.body.email;
+                signedInStudent.phoneNum = req.body.phoneNum;
+                signedInStudent.gender = req.body.gender;
+                signedInStudent.address = req.body.address;
+                signedInStudent.gitHub = req.body.giithub
 
-                result.save();
-                res.json({ result })
+                signedInStudent.save();
+                res.json({ signedInStudent })
             })
-        }else {
-            return res.status(403).json({msg:"You are not authorized to Edit this profile"})
-        }
+        // }
+        // else {
+        //     return res.status(403).json({msg:"You are not authorized to Edit this profile"})
+        // }
         
     } catch (error) {
         console.log(error.message);
@@ -179,6 +191,25 @@ const studentAssessment = async (req, res) => {
     }
 }
 
+const studentAssessmentSolution = async (req, res) => {
+
+    const { solution, studentID } = req.body
+
+    try {
+        const submittedAssignment = new StudentAssessmentModel({
+            solution, studentID
+        })
+
+        console.log(submittedAssignment)
+
+        await submittedAssignment.save()
+        res.status(200).json({submittedAssignment})
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).send("Server error")
+    }
+}
+
 
 module.exports = {
     loginStudent,
@@ -187,5 +218,6 @@ module.exports = {
     studentLogout,
     getAStudent,
     studentProfileUpdate,
-    studentAssessment
+    studentAssessment,
+    studentAssessmentSolution
 }
