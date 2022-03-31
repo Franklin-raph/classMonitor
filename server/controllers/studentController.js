@@ -1,16 +1,16 @@
 const Student = require('../models/studentModel');
+const cloudinary = require('../config/cloudinary')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 const { v4: uuidv4 } = require('uuid');
 
 
-// Register student
-const registerStudent = async (req, res) => {
-    
-    const { name, email, password, phoneNum, gender, address, github } = req.body
-
+const registerStudent =  async (req, res) => {
     try {
+        const { name, email, password, phoneNum, gender, address, github } = req.body
+        const result = await cloudinary.uploader.upload(req.file.path)
+
         let student = await Student.findOne({name})
         let studentEmail = await Student.findOne({email})
 
@@ -21,7 +21,7 @@ const registerStudent = async (req, res) => {
         const student_id = `TN-${uuidv4()}`;
 
         student = new Student({
-            name, email, password, phoneNum, gender, address, studentID:student_id, github
+            name, email, password, phoneNum, gender, address, studentID:student_id, github, avatar:result.secure_url, cloudinary_id:result.public_id
         })
 
         console.log(student)
@@ -38,7 +38,7 @@ const registerStudent = async (req, res) => {
 
         const token = createToken(student._id)
         res.cookie('myToken', token, { httpOnly: true, maxAge: 60*60*1000*24*3})
-        const signedInStudent = _.pick(student, 'name','email','phoneNum','gender','studentID','github', 'address');
+        const signedInStudent = _.pick(student, 'name','email','phoneNum','gender','studentID','github', 'address','avatar');
         console.log(signedInStudent)
         res.status(200).json({signedInStudent,token})
 
@@ -47,6 +47,7 @@ const registerStudent = async (req, res) => {
         res.status(500).send("Server Error")
     }
 }
+    
 
 
 // Login student
@@ -85,7 +86,7 @@ const getAllStudent = async (req, res) => {
     console.log(student)
     try {
         const students = await Student.find().sort({ createdAt: -1 });
-        const allStu = students.map(({name,email,studentID,phoneNum,gender,github}) => ({name,email,studentID,phoneNum,gender,github}))
+        const allStu = students.map(({name,email,studentID,phoneNum,gender,github, avatar}) => ({name,email,studentID,phoneNum,gender,github, avatar}))
         res.json(allStu);
 
     } catch (error) {
@@ -103,7 +104,7 @@ const getAStudent = async (req, res) => {
         const student = await Student.findOne({ studentID : req.params.student_id });
         if(!student) return res.status(404).json({msg: `No student with id ${req.params.student_id}`})
 
-        const stdData = _.pick(student, 'name','email','phoneNum','gender','studentID','github','address');
+        const stdData = _.pick(student, 'name','email','phoneNum','gender','studentID','github','address','avatar');
 
         return res.status(200).json(stdData);
 
@@ -145,13 +146,13 @@ const studentProfileUpdate = async (req, res) => {
             // console.log(typeof studentId)
             // console.log(studentId)
 
-            if(student) return res.status(400).json({ msg:"Username alraedy exists" })
+            // if(student) return res.status(400).json({ msg:"Username alraedy exists" })
 
             if(studentEmail) return res.status(400).json({ msg: "Email already exists"})
 
             Student.findOne({ studentID: req.params.student_id })
             .then(signedInStudent => {
-                signedInStudent.name = req.body.name;
+                signedInStudent.name = req.body.name || student.name;
                 signedInStudent.email = req.body.email;
                 signedInStudent.phoneNum = req.body.phoneNum;
                 signedInStudent.gender = req.body.gender;

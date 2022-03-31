@@ -24,8 +24,14 @@ const StudentSchema = mongoose.Schema({
     },
     github: {
         type: String,
+    },
+    avatar : {
+        type: String,
+    },
+    cloudinary_id: {
+        type: String,
     }
-}, {timeStamps: true})
+}, {timestamps: true})
 
 module.exports = mongoose.model('student', StudentSchema)
 

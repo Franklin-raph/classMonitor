@@ -21,9 +21,6 @@ router.post('/solution', poststudentAssessmentSolution)
 router.get('/studentSolution', getStudentAssessmentSolution)
 
 
-
-
-
 // router.get('/:student_id', requireAuth, checkStudent, getAStudent)
 
 router.get('/:student_id', getAStudent)
