@@ -9,7 +9,7 @@ const { v4: uuidv4 } = require('uuid');
 const registerStudent =  async (req, res) => {
     try {
         const { name, email, password, phoneNum, gender, address, github } = req.body
-        const result = await cloudinary.uploader.upload(req.file.path)
+        // const result = await cloudinary.uploader.upload(req.file.path)
 
         let student = await Student.findOne({name})
         let studentEmail = await Student.findOne({email})
@@ -21,7 +21,7 @@ const registerStudent =  async (req, res) => {
         const student_id = `TN-${uuidv4()}`;
 
         student = new Student({
-            name, email, password, phoneNum, gender, address, studentID:student_id, github, avatar:result.secure_url, cloudinary_id:result.public_id
+            name, email, password, phoneNum, gender, address, studentID:student_id, github, avatar:"" , cloudinary_id:""
         })
 
         console.log(student)
@@ -57,7 +57,7 @@ const loginStudent = async (req, res) => {
 
     try {
         let student = await Student.findOne({studentID})
-        const signedInStudent = _.pick(student, 'name','email','phoneNum','gender','address','studentID','github');
+        const signedInStudent = _.pick(student, 'name','email','phoneNum','gender','address','studentID','github','avatar');
         if(!student) return res.status(400).json({ msg: "Invalid login credentials"})
 
         let isMatch = await bcrypt.compare(password, student.password)
@@ -172,6 +172,36 @@ const studentProfileUpdate = async (req, res) => {
         res.status(500).send("Server Error")
     }
 }
+// avatar:result.secure_url,
+const uploadProfilePic = async (req, res) => {
+
+    try {
+        const result = await cloudinary.uploader.upload(req.file.path)
+        console.log("Hello")
+        console.log(result)
+
+        Student.findOne({ studentID: req.params.student_id })
+            .then(signedInStudent => {
+                console.log(signedInStudent)
+                signedInStudent.avatar = result.secure_url || signedInStudent.avatar
+                signedInStudent.cloudinary_id = result.public_id || signedInStudent.cloudinary_id 
+                signedInStudent.name = signedInStudent.name
+                signedInStudent.email = signedInStudent.email;
+                signedInStudent.phoneNum = signedInStudent.phoneNum;
+                signedInStudent.gender = signedInStudent.gender;
+                signedInStudent.address =signedInStudent.address;
+                signedInStudent.gitHub = signedInStudent.giithub
+
+                signedInStudent.save();
+                res.json({ signedInStudent })
+            })
+        // res.send(student)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Server Error")
+    }
+    
+}
 
 
 
@@ -182,4 +212,5 @@ module.exports = {
     studentLogout,
     getAStudent,
     studentProfileUpdate,
+    uploadProfilePic
 }
