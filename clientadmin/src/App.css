@@ -1,0 +1,27 @@
+.card{
+  width: 40%;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (max-width: 1024px) {
+  .card{
+      /* width: 50%; */
+    }
+}
+
+@media (max-width: 768px) {
+  .card{
+      width: 60%;
+      /* display: none; */
+    }
+}
+
+/* @media (max-width: 880px) {
+  .card{
+      width: 40%;
+    }
+} */
