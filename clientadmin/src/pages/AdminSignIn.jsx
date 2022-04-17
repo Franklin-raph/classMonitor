@@ -28,7 +28,6 @@ const AdminSignIn = () => {
     <div>
     <div className="card card-body">
         <div className="text-center">
-            {/* <img src="/newcmd.png" alt="" srcset="" /> */}
             <h3>Login</h3>
             <i className="fas fa-user-circle" style={{fontSize: "3rem"}}></i>
         </div>
