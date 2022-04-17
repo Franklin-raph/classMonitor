@@ -1,6 +1,9 @@
 import React,{useEffect, useState} from 'react'
 import axios from 'axios'
 import { Container, Row, Col } from "reactstrap";
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+import { Link } from 'react-router-dom';
 
 const AllStudents = () => {
 
@@ -28,18 +31,28 @@ console.log(students)
       
           <Container>
             <Row>
-            {students.map((student) => {
+            {students.length !== 0 ? 
+            students.map((student) => {
               return(
                 <>
-                <Col sm="12" md="6" lg="4" className='my-3'>
-                  <Box> 
-                    <h5>Name : {student.name}</h5>
-                    <h5>Email : {student.email}</h5>
-                  </Box>
-              </Col>
+                  <Col sm="12" md="6" lg="4" className='my-3'>
+                    <Link to={`/student/${student.studentID}`}>
+                        <Box> 
+                          <h5>Name : {student.name}</h5>
+                          <h5>Email : {student.email}</h5>
+                        </Box>
+                  </Link>
+                </Col>
                 </> 
               )
-            })}
+            })
+            :
+            <Backdrop sx={{ color: '#002141', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={true}
+            >
+              <CircularProgress color="inherit" />
+            </Backdrop>
+          }
             </Row>
           </Container>
     </div>
