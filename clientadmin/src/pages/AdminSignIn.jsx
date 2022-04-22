@@ -7,6 +7,7 @@ const AdminSignIn = () => {
 
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [error, setError] = useState("");
 
     const adminSignInDetails = { email, password };
 
@@ -21,13 +22,21 @@ const AdminSignIn = () => {
         })
         const data = await resp.json()
         localStorage.setItem('admin', JSON.stringify(data.signedInAdmin))
-        navigate(`/dashboard`)
+        if(data.msg === "Invalid login credentials"){
+            setError("Invalid login credentials")
+            setTimeout(() => {setError("")}, 5000)
+            navigate(`/`)
+        }else{
+            navigate(`/dashboard`)
+        }
+        
         console.log(data)
     }
   return (
     <div>
     <div className="card card-body">
         <div className="text-center">
+            <p className='text-danger'>{error}</p>
             <h3>Login</h3>
             <i className="fas fa-user-circle" style={{fontSize: "3rem"}}></i>
         </div>

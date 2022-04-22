@@ -29,13 +29,18 @@ const Navbar = () => {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark" style={{zIndex:'1'}}>
           <div className="container">
             <a className="navbar-brand" href="#">Class Monitor Admin</a>
-            <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <div className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
-            </button>
+            </div>
             <div className="collapse navbar-collapse" id="navbarNav">
               <ul className="navbar-nav ms-auto">
                 {localStorage.getItem('admin')?
                 <>
+                  <li className="nav-item">
+                    <Link to="/dashboard" className="nav-link">
+                      Dashboard
+                    </Link>
+                  </li>
                   <li className="nav-item">
                     <Link to="/allstuents" className="nav-link">
                       View Students

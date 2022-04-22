@@ -7,6 +7,18 @@
   transform: translate(-50%, -50%);
 }
 
+a{
+  text-decoration: none;
+  color: #212529;
+}
+
+#studentCard{
+  padding: 0.7rem;
+  background-color: #f4f4f4;
+  box-shadow: 0.5px 0.5px 3px #2b2b2b;
+  border-radius: 10px;
+}
+
 @media (max-width: 1024px) {
   .card{
       /* width: 50%; */
