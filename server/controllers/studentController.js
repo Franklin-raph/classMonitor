@@ -1,4 +1,5 @@
 const Student = require('../models/studentModel');
+const Admin = require('../models/adminModel');
 const cloudinary = require('../config/cloudinary')
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
@@ -350,9 +351,20 @@ const updateStudentPassword = async (req, res) => {
 }
 
 
+const deleteStudentRecord = async (req, res) => {
+    try{
+            await travel.findOne({ stdentID: req.params.student_id })
+            res.send("Student Record has been deleted successfully")
+        } catch (err) {
+        console.log(err)
+        res.status(500).send("Internal server error")
+    }
+}
+
 module.exports = {
     loginStudent,
     registerStudent,
+    deleteStudentRecord,
     getAllStudent,
     studentLogout,
     getAStudent,
