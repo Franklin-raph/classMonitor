@@ -13,7 +13,7 @@ const AdminSignIn = () => {
 
     const handleAdminLogin = async (e) => {
         e.preventDefault();
-        const resp = await fetch('http://localhost:5000/auth/admin/login',{
+        const resp = await fetch('https://classroommonitorbackend.herokuapp.com/auth/admin/login',{
             method:"POST",
             body: JSON.stringify(adminSignInDetails),
             headers: {
