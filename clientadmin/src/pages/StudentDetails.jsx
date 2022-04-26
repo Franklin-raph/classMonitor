@@ -81,9 +81,8 @@ const style = {
 };
 
 const paperStyle = {
-  paddingLeft: '2rem',
-  marginBottom: '1rem',
-  marginTop:'9rem'
+  padding: '2rem 0 1rem 2rem',
+  margin: '9rem 0 1rem',
 }
 
 const imageStyle = {
@@ -182,7 +181,7 @@ const StudentDetails = () => {
           aria-labelledby="child-modal-title"
           aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...style, width: 600 }}>
+        <Box sx={{ ...style }}>
           <h4 id="child-modal-title">Delete Record</h4>
           <p id="child-modal-description">
             Are you sure you want to delete this student's record?

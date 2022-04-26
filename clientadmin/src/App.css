@@ -1,3 +1,9 @@
+.solutionBody{
+  position: relative;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 a{
   text-decoration: none;
   color: #212529;
@@ -41,6 +47,7 @@ a{
   font-size: 3rem;
 }
 
+
 @media (max-width: 1024px) {
   .card{
       /* width: 50%; */
@@ -50,7 +57,17 @@ a{
 @media (max-width: 768px) {
   .card{
       width: 60%;
-      /* display: none; */
+    }
+
+    #adminDashboard{
+      margin: 0 4.5rem;
+    }
+}
+
+@media (max-width: 475px) {
+
+    #adminDashboard{
+      margin: 0 0;
     }
 }
 

@@ -49,7 +49,16 @@ const AdminSignIn = () => {
             <label className="mt-3">Password</label>
             <input type="password" placeholder="****" onChange={(e) => setPassword(e.target.value)} className="form-control" name="password" required />
 
-            <input type="submit" className="form-control btn-dark mt-3"  value="Login" />
+            <button type="submit" className="form-control btn-dark mt-3" disabled={loading}>
+                {loading && (
+                        <span 
+                        className='spinner-border spinner-border-sm'
+                        role='status'
+                        aria-hidden='true'
+                            />
+                    )}
+                    Login
+            </button>
         </div>
     </form>
     </div>

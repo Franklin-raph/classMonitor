@@ -41,11 +41,11 @@ const Navbar = () => {
                       Dashboard
                     </Link>
                   </li>
-                  <li className="nav-item">
+                  {/* <li className="nav-item">
                     <Link to="/allstuents" className="nav-link">
                       View Students
                     </Link>
-                  </li>
+                  </li> */}
                   <li className="nav-item">
                     <Link to="/tasks" className="nav-link">
                       Tasks
