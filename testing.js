@@ -1,16 +1,10 @@
-// const uid = () => {
-//     const head = Date.now().toString(36);
-//     const tail = Math.random().toString(36).substr(2);
+const uid = () => {
+    const head = Date.now().toString(36);
+    const tail = Math.random().toString(36).substr(2);
+    return `TN-${head}${tail}`
+}
 
-//     console.log(head+tail)
-
-//     console.log(head)
-//     console.log(tail)
-
-//     return `TN-${head}${tail}`
-// }
-
-// console.log(uid())
+console.log(uid())
 
 // Using the two pointer approach to reverse an array
 const solution = () => {
@@ -48,4 +42,4 @@ const palindrome = (str) => {
     const reversedString = originalString.split('').reverse().join('');
     {originalString === reversedString ? console.log('true') : console.log('false')}
 }
-palindrome('dada');
+palindrome('madam');
