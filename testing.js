@@ -38,6 +38,7 @@ console.log(solution())
 
 // PALINDROME
 const palindrome = (str) => {
+    
     const originalString = str
     const reversedString = originalString.split('').reverse().join('');
     {originalString === reversedString ? console.log('true') : console.log('false')}
