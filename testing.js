@@ -44,3 +44,19 @@ const palindrome = (str) => {
     {originalString === reversedString ? console.log('true') : console.log('false')}
 }
 palindrome('madam');
+
+// let i = 0
+// while(i <= 20){
+//     if(i%3 === 0 && i%5 === 0) console.log("FizzBuzz")
+//     else if(i%5 === 0) console.log("Buzz") 
+//     else if(i%3 === 0) console.log("Fizz") 
+//     else console.log(i)
+//     i++;
+// }
+
+// let lyricsNum = 99;
+// while(lyricsNum > 0){
+//     if(lyricsNum == 1) console.log(lyricsNum + " bottle of juice on the wall! " + lyricsNum + " bottle of juice! Take one down, pass it around...")
+//     console.log(lyricsNum + " bottles of juice on the wall! " + lyricsNum + " bottles of juice! Take one down, pass it around...")
+//     lyricsNum--
+// }
