@@ -37,7 +37,11 @@ const swap = (newArray, startIndex, endIndex) => {
     // here i now i now assigned the last elenment in the array with to temp e.g 5 = temp
     newArray[endIndex] = temp
 }
-console.log(solution())
+// console.log(solution())
+
+
+
+
 
 
 
@@ -97,38 +101,65 @@ console.log(solution())
 // console.log(obj.name)
 
 
-// function each(array, callback) {
-//   for (let i = 0; i < array.length; i++) {
-//     if (callback(array[i])) {
-//       console.log(array[i]);
-//     }
-//   }
-// }
 
-// function isPositive(n) {
-//   return n > 0;
-// };
+const musicData = [
+    { artist: 'Rihanna', name: 'Anti', sales: 603000 },
+    { artist: 'Justin Bieber', name: 'Purpose', sales: 554000 }
+];
 
-// each([-2, 7, 11, -4, -10], isPositive);
-
-// function oddNums(n){
-//     debugger
-//     if(n % 2 === 0){
-//         console.log(n)
-//     }
-// }
-
-// [2,4,5,2,3,6,7,-90,6,4].forEach(oddNums)
-
-
-// const musicData = [
-//     { artist: 'Rihanna', name: 'Anti', sales: 603000 },
-//     { artist: 'Justin Bieber', name: 'Purpose', sales: 554000 }
-// ];
-
-// const albumSalesStrings = musicData.map(function(currentValue){
-//     return `${currentValue.name} by ${currentValue.artist} sold ${currentValue.sales} copies`
-// });
+const albumSalesStrings = musicData.map(function(currentValue){
+    return `${currentValue.name} by ${currentValue.artist} sold ${currentValue.sales} copies`
+});
 // console.log(albumSalesStrings);
+
+
+
+// Finding the largest value in an array
+let arr = []
+function largestElement(arr) {
+    let max = arr[0]
+    for(let i = 1; i < arr.length; i++) {
+        if(max < arr[i]) {
+            max = arr[i]
+        }
+    }
+    return max
+}
+
+// console.log(largestElement([1,2,3,4,50,96]))
+
+
+
+// Finding the largest value in an array
+function largestElement(){
+    let array = [2,4,5,6,8,6,8,7,8,7,9,21,5,9,15]
+    let maxValue = array.length - 1
+    for(let i = 0; i < array.length; i ++){
+        if(maxValue < array[i]){
+            maxValue = array[i]
+        }
+    }
+    console.log(maxValue);
+}
+
+// largestElement()
+
+
+// Finding the smalllest value in an array
+function largest_Element() {
+    // sort the array in ascending order
+    let arr = [2,4,6,3,8,9,2,4]
+    arr.sort()
+    arr.reverse()
+    let largest_element
+    for(let i = 0; i < arr.length; i++){
+        largest_element = arr[i]
+    }
+    
+    return largest_element
+}
+
+// console.log(largest_Element())
+
 
 
