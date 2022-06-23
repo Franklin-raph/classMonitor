@@ -92,4 +92,88 @@ def midElementIndex(arr):
 
 arr = [2,4,6,9,10,15]
 res = midElementIndex(arr)
-print(res)
+# print(res)
+
+
+# REMOVE EVEN NUMBERS FROM A LIST(APPROACH 1)
+def removeEven(lst):
+    oddNum = []
+    for i in lst:
+        if(i % 2 == 0):
+            pass
+        else:
+            oddNum.append(i)
+    return oddNum
+
+result = removeEven([119, 15, 196, 55])
+print(result)
+
+# REMOVE EVEN NUMBERS FROM A LIST(APPROACH 2)
+# newList = [expression(i) for i in oldList if filter(i)]
+def remove_even(lst):
+    # List comprehension to iter aover List and add to new list if not even
+    return [number for number in lst if number % 2 != 0]
+
+# print(remove_even([3, 2, 41, 3, 34]))
+
+
+# listItems = [1, 3, 4, 5]
+# listItems2 = [2, 6, 7, 8]
+# listItems.sort()
+# listItems2.sort()
+# mergeLists = listItems + listItems2
+# mergeLists.sort()
+# print(mergeLists)
+
+def sortList():
+    lst = [2,4,3,6,5,1]
+    startIndex = 0
+    endIndex = len(lst) - 1
+
+    while(startIndex < endIndex):
+        swap(lst, startIndex, endIndex)
+        startIndex=+1
+        endIndex=-1
+    return lst
+
+newList = []
+def swap(newList, startIndex, endIndex):
+    temp = newList[startIndex]
+    newList[startIndex] = newList[endIndex]
+    newList[endIndex] = temp
+
+ans = sortList()
+# print(ans)
+
+def merge_arrays(lst1, lst2):
+    ind1 = 0  # Creating 2 new variable to track the 'current index'
+    ind2 = 0
+    # While both indeces are less than the length of their lists
+    while ind1 < len(lst1) and ind2 < len(lst2):
+        # If the current element of list1 is greater
+        # than the current element of list2
+        if(lst1[ind1] > lst2[ind2]):
+            # insert list2's current index to list1
+            lst1.insert(ind1, lst2[ind2])
+            ind1 += 1  # increment indices
+            ind2 += 1
+        else:
+            ind1 += 1
+
+    if ind2 < len(lst2):  # Append whatever is left of list2 to list1
+        lst1.extend(lst2[ind2:])
+    return lst1
+
+
+# print(merge_arrays([4, 5, 6], [-2, -1, 0, 7]))
+
+
+def sortedMergedList(list1, list2):
+    newList = list1 + list2
+    newList.sort()
+    return newList
+
+# print(sortedMergedList([4, 5, 6], [-2, -1, 0, 7]))
+
+class Sample():
+    pass
