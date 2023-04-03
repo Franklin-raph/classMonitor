@@ -103,7 +103,8 @@ const loginStudent = async (req, res) => {
     let student = await Student.findOne({ studentID });
     const signedInStudent = _.pick(
       student,
-      "name",
+      "firstName",
+      "lastName",
       "email",
       "phoneNum",
       "gender",
@@ -138,8 +139,9 @@ const getAllStudent = async (req, res) => {
   console.log(student);
   try {
     const students = await Student.find().sort({ createdAt: -1 });
-    const allStu = students.map(({ name, email, studentID, phoneNum, gender, github, avatar }) => ({
-      name,
+    const allStu = students.map(({ firstName, lastName, email, studentID, phoneNum, gender, github, avatar }) => ({
+      firstName,
+      lastName,
       email,
       studentID,
       phoneNum,
@@ -162,7 +164,18 @@ const getAStudent = async (req, res) => {
     const student = await Student.findOne({ studentID: req.params.student_id });
     if (!student) return res.status(404).json({ msg: `No student with id ${req.params.student_id}` });
 
-    const stdData = _.pick(student, "name", "email", "phoneNum", "gender", "studentID", "github", "address", "avatar");
+    const stdData = _.pick(
+      student,
+      "firstName",
+      "lastName",
+      "email",
+      "phoneNum",
+      "gender",
+      "studentID",
+      "github",
+      "address",
+      "avatar"
+    );
 
     return res.status(200).json(stdData);
   } catch (error) {
@@ -189,11 +202,10 @@ const studentProfileUpdate = async (req, res) => {
   // let profileUpdateStudentId = profileUpdateStudent._id.toString()
   // console.log(`This post was made by this user with an id of -> ${profileUpdateStudentId}`)
 
-  const { name, email, studentID } = req.body;
+  const { email, studentID } = req.body;
   try {
     // if(loggedInStudentId === profileUpdateStudentId){
 
-    let student = await Student.findOne({ name });
     let studentEmail = await Student.findOne({ email });
 
     // let studentId = await Student.findOne({studentID})
@@ -205,8 +217,8 @@ const studentProfileUpdate = async (req, res) => {
     if (studentEmail) return res.status(400).json({ msg: "Email already exists" });
 
     Student.findOne({ studentID: req.params.student_id }).then((signedInStudent) => {
-      signedInStudent.name = req.body.name || student.name;
-      signedInStudent.email = req.body.email;
+      signedInStudent.firstName = req.body.firstName;
+      signedInStudent.lastName = req.body.lastName;
       signedInStudent.phoneNum = req.body.phoneNum;
       signedInStudent.gender = req.body.gender;
       signedInStudent.address = req.body.address;
@@ -235,7 +247,8 @@ const uploadProfilePic = async (req, res) => {
       console.log(signedInStudent);
       signedInStudent.avatar = result.secure_url || signedInStudent.avatar;
       signedInStudent.cloudinary_id = result.public_id || signedInStudent.cloudinary_id;
-      signedInStudent.name = signedInStudent.name;
+      signedInStudent.firstName = signedInStudent.firstName;
+      signedInStudent.lastName = signedInStudent.lastName;
       signedInStudent.email = signedInStudent.email;
       signedInStudent.phoneNum = signedInStudent.phoneNum;
       signedInStudent.gender = signedInStudent.gender;
@@ -343,7 +356,8 @@ const updateStudentPassword = async (req, res) => {
       console.log(signedInStudent);
       signedInStudent.avatar = signedInStudent.avatar;
       signedInStudent.cloudinary_id = signedInStudent.cloudinary_id;
-      signedInStudent.name = signedInStudent.name;
+      signedInStudent.lastName = signedInStudent.lastName;
+      signedInStudent.firstName = signedInStudent.firstName;
       signedInStudent.email = signedInStudent.email;
       signedInStudent.phoneNum = signedInStudent.phoneNum;
       signedInStudent.gender = signedInStudent.gender;

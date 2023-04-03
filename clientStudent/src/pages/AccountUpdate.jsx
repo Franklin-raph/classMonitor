@@ -133,7 +133,7 @@ const AccountUpdate = ({baseUrl}) => {
             // ${baseUrl}
             setLoading(true)
             try {
-                dispatch(updateAccount({firstName, lastName, phoneNum,address,gender,github,studentID}))
+                dispatch(updateAccount({firstName, lastName, phoneNum, address, gender, github, studentID}))
                 const resp = await fetch(`${baseUrl}/student/${id}`, {
                 method: "PATCH",
                 mode: "cors",
@@ -211,6 +211,7 @@ const AccountUpdate = ({baseUrl}) => {
                   onChange={(e) => setEmail(e.target.value)}
                   fullWidth
                   sx={{mb:2}}
+                  disabled = 'true'
               />
 
               <TextField 

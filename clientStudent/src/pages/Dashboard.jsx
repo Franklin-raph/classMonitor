@@ -96,6 +96,7 @@ const Dashboard = ({baseUrl}) => {
 
   const navigate = useNavigate();
 
+
   const studentDetails = useSelector(state => state.student)
   if(studentDetails.value === null){
     navigate(`/login`)
@@ -114,6 +115,8 @@ const Dashboard = ({baseUrl}) => {
 
   useEffect( () => {
     getAllAssessment()
+    let signedInStudent = JSON.parse(localStorage.getItem('studentDetails'))
+    // getCurrentStudent()
   },[])
 
   async function getAllAssessment(){
@@ -122,6 +125,13 @@ const Dashboard = ({baseUrl}) => {
       setallStudentAssessments(allAssessment)
       console.log(allAssessment)
   }
+
+  // async function getCurrentStudent(){
+  //     const resp = await fetch(`${baseUrl}/student/${}`)
+  //     const allAssessment = await resp.json()
+  //     setallStudentAssessments(allAssessment)
+  //     console.log(allAssessment)
+  // }
 
   // allStudentAssessments.map((assessment) => {
   //   const date = new Date(assessment.createdAt).toDateString()
