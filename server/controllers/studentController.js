@@ -222,7 +222,7 @@ const studentProfileUpdate = async (req, res) => {
       signedInStudent.phoneNum = req.body.phoneNum;
       signedInStudent.gender = req.body.gender;
       signedInStudent.address = req.body.address;
-      signedInStudent.gitHub = req.body.giithub;
+      signedInStudent.github = req.body.giithub;
 
       signedInStudent.save();
       res.json({ signedInStudent });

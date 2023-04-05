@@ -54,7 +54,7 @@ const AllStudents = ({baseUrl}) => {
     },[])
 
     async function getALlStudents(){
-        const res = await fetch(`http://localhost:5000/student`)
+        const res = await fetch(`${baseUrl}/student`)
         const data = await res.json()
         setStudents(data)
         console.log(data)

@@ -26,7 +26,7 @@ const theme = createTheme({
   },
 });
 
-const baseUrl = "http://localhost:5000";
+const baseUrl = "https://classmonitorapplication.onrender.com";
 
 function App() {
   return (
